@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>Control Panel</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">On/Off Switch</div>
+                    <div class="card-body text-center">
+                        <button class="btn btn-primary" onclick="on()" id="power-On">On</button>
+                        <button class="btn btn-secondary" onclick="off()" id="power-Off">Off</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Multi-Stage Switch</div>
+                    <div class="card-body text-center">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-secondary" onclick="setStage(0)" id="stage-0">0</button>
+                            <button class="btn btn-primary" onclick="setStage(1)" id="stage-1">1</button>
+                            <button class="btn btn-primary" onclick="setStage(2)" id="stage-2">2</button>
+                            <button class="btn btn-primary" onclick="setStage(3)" id="stage-3">3</button>
+                            <button class="btn btn-primary" onclick="setStage(4)" id="stage-4">4</button>
+                            <button class="btn btn-primary" onclick="setStage(5)" id="stage-5">5</button>
+                            <button class="btn btn-primary" onclick="setStage(6)" id="stage-6">6</button>
+                            <button class="btn btn-primary" onclick="setStage(7)" id="stage-7">7</button>
+                            <button class="btn btn-primary" onclick="setStage(8)" id="stage-8">8</button>
+                            <button class="btn btn-primary" onclick="setStage(9)" id="stage-9">9</button>
+                            <button class="btn btn-primary" onclick="setStage(10)" id="stage-10">10</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    let socket = io();
+
+    function on()
+    {
+        socket.emit('power', 'On');
+    }
+
+    function off()
+    {
+        socket.emit('power', 'Off');
+    }
+
+    function setStage(stage)
+    {
+        socket.emit('stage', stage);
+    }
+
+    socket.on('power', status => {
+        let on = document.getElementById('power-On');
+        let off = document.getElementById('power-Off');
+
+        on.disabled = false;
+        off.disabled = false;
+
+        document.getElementById(`power-${status}`).disabled = true;
+    });
+
+    socket.on('stage', stage => {
+        for (let i = 0; i <= 10; i++) {
+            document.getElementById(`stage-${i}`).disabled = false;
+        }
+        document.getElementById(`stage-${stage}`).disabled = true;
+    });
+</script>
+</body>
+</html>
