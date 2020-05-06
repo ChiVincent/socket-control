@@ -13,8 +13,8 @@
                 <div class="card">
                     <div class="card-header">On/Off Switch</div>
                     <div class="card-body text-center">
-                        <button class="btn btn-primary" onclick="on()">On</button>
-                        <button class="btn btn-secondary" onclick="off()">Off</button>
+                        <button class="btn btn-primary" onclick="on()" id="power-on">On</button>
+                        <button class="btn btn-secondary" onclick="off()" id="power-off">Off</button>
                     </div>
                 </div>
             </div>
@@ -23,17 +23,17 @@
                     <div class="card-header">Multi-Stage Switch</div>
                     <div class="card-body text-center">
                         <div class="btn-group" role="group">
-                            <button class="btn btn-secondary" onclick="setStage(0)">0</button>
-                            <button class="btn btn-primary" onclick="setStage(1)">1</button>
-                            <button class="btn btn-primary" onclick="setStage(2)">2</button>
-                            <button class="btn btn-primary" onclick="setStage(3)">3</button>
-                            <button class="btn btn-primary" onclick="setStage(4)">4</button>
-                            <button class="btn btn-primary" onclick="setStage(5)">5</button>
-                            <button class="btn btn-primary" onclick="setStage(6)">6</button>
-                            <button class="btn btn-primary" onclick="setStage(7)">7</button>
-                            <button class="btn btn-primary" onclick="setStage(8)">8</button>
-                            <button class="btn btn-primary" onclick="setStage(9)">9</button>
-                            <button class="btn btn-primary" onclick="setStage(10)">10</button>
+                            <button class="btn btn-secondary" onclick="setStage(0)" id="stage-0">0</button>
+                            <button class="btn btn-primary" onclick="setStage(1)" id="stage-1">1</button>
+                            <button class="btn btn-primary" onclick="setStage(2)" id="stage-2">2</button>
+                            <button class="btn btn-primary" onclick="setStage(3)" id="stage-3">3</button>
+                            <button class="btn btn-primary" onclick="setStage(4)" id="stage-4">4</button>
+                            <button class="btn btn-primary" onclick="setStage(5)" id="stage-5">5</button>
+                            <button class="btn btn-primary" onclick="setStage(6)" id="stage-6">6</button>
+                            <button class="btn btn-primary" onclick="setStage(7)" id="stage-7">7</button>
+                            <button class="btn btn-primary" onclick="setStage(8)" id="stage-8">8</button>
+                            <button class="btn btn-primary" onclick="setStage(9)" id="stage-9">9</button>
+                            <button class="btn btn-primary" onclick="setStage(10)" id="stage-10">10</button>
                         </div>
                     </div>
                 </div>
@@ -61,6 +61,23 @@
     {
         socket.emit('stage', stage);
     }
+
+    socket.on('power', status => {
+        let on = document.getElementById('power-on');
+        let off = document.getElementById('power-off');
+
+        on.disabled = false;
+        off.disabled = false;
+
+        document.getElementById(`power-${status}`).disabled = true;
+    });
+
+    socket.on('stage', stage => {
+        for (let i = 0; i <= 10; i++) {
+            document.getElementById(`stage-${i}`).disabled = false;
+        }
+        document.getElementById(`stage-${stage}`).true;
+    });
 </script>
 </body>
 </html>
