@@ -1,0 +1,6 @@
+{
+  "name": "socket-control",
+  "version": "0.0.1",
+  "description": "Control something by websocket",
+  "dependencies": {}
+}
